@@ -1,10 +1,69 @@
+import { useEffect, useRef } from "react";
 import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
 import { Wheat, Droplets, School, Heart, TreeDeciduous, Users } from "lucide-react";
+import gsap from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
 import festivalImage from "@/assets/festival.jpg";
 import heroImage from "@/assets/hero-village.jpg";
+import gallery1Image from "@/assets/gallery-1.jpg";
+import gallery2Image from "@/assets/gallery-2.jpg";
+import gallery3Image from "@/assets/gallery-3.jpg";
+
+gsap.registerPlugin(ScrollTrigger);
 
 const About = () => {
+  const highlightsRef = useRef<HTMLDivElement>(null);
+  const timelineRef = useRef<HTMLDivElement>(null);
+  const galleryRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    // Animate highlights cards
+    if (highlightsRef.current) {
+      const cards = highlightsRef.current.children;
+      gsap.from(cards, {
+        opacity: 0,
+        y: 50,
+        duration: 0.8,
+        stagger: 0.15,
+        scrollTrigger: {
+          trigger: highlightsRef.current,
+          start: "top 80%",
+        },
+      });
+    }
+
+    // Animate timeline
+    if (timelineRef.current) {
+      const items = timelineRef.current.children;
+      gsap.from(items, {
+        opacity: 0,
+        x: -60,
+        duration: 0.8,
+        stagger: 0.2,
+        scrollTrigger: {
+          trigger: timelineRef.current,
+          start: "top 80%",
+        },
+      });
+    }
+
+    // Animate gallery
+    if (galleryRef.current) {
+      const images = galleryRef.current.querySelectorAll('.gallery-image');
+      gsap.from(images, {
+        opacity: 0,
+        scale: 0.8,
+        duration: 0.8,
+        stagger: 0.2,
+        scrollTrigger: {
+          trigger: galleryRef.current,
+          start: "top 80%",
+        },
+      });
+    }
+  }, []);
+
   return (
     <div className="min-h-screen">
       <Header />
@@ -21,15 +80,56 @@ const About = () => {
         </div>
       </section>
 
-      {/* History Section */}
+      {/* Photo Gallery */}
       <section className="section-spacing">
         <div className="container-custom">
+          <div className="text-center mb-12">
+            <h2 className="text-4xl font-bold text-foreground mb-4">Village Gallery</h2>
+            <p className="text-muted-foreground text-lg">Glimpses of our beautiful village</p>
+          </div>
+          
+          <div ref={galleryRef} className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <div className="gallery-image lg:col-span-2 h-[400px] rounded-2xl overflow-hidden shadow-xl group">
+              <img
+                src={gallery1Image}
+                alt="Village Festivals & Traditions"
+                className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+              />
+            </div>
+            <div className="gallery-image h-[400px] rounded-2xl overflow-hidden shadow-xl group">
+              <img
+                src={gallery2Image}
+                alt="Agricultural Landscape"
+                className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+              />
+            </div>
+            <div className="gallery-image h-[400px] rounded-2xl overflow-hidden shadow-xl group">
+              <img
+                src={gallery3Image}
+                alt="Community Gathering"
+                className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+              />
+            </div>
+            <div className="gallery-image lg:col-span-2 h-[400px] rounded-2xl overflow-hidden shadow-xl group">
+              <img
+                src={festivalImage}
+                alt="Cultural Celebrations"
+                className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+              />
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* History Section */}
+      <section className="section-spacing bg-muted/30">
+        <div className="container-custom">
           <div className="grid lg:grid-cols-2 gap-12 items-center">
-            <div className="rounded-2xl overflow-hidden shadow-xl">
+            <div className="rounded-2xl overflow-hidden shadow-2xl">
               <img
                 src={heroImage}
                 alt="Malkapur History"
-                className="w-full h-[500px] object-cover"
+                className="w-full h-[500px] object-cover hover:scale-105 transition-transform duration-700"
               />
             </div>
             
@@ -57,15 +157,15 @@ const About = () => {
       </section>
 
       {/* Key Features */}
-      <section className="section-spacing bg-muted/30">
+      <section className="section-spacing">
         <div className="container-custom">
           <div className="text-center mb-12">
             <h2 className="text-4xl font-bold text-foreground mb-4">Village Highlights</h2>
             <p className="text-muted-foreground text-lg">What makes Malkapur special</p>
           </div>
           
-          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
-            <div className="card-elevated p-6">
+          <div ref={highlightsRef} className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            <div className="card-elevated p-6 hover:shadow-2xl transition-all duration-300 hover:-translate-y-2">
               <div className="w-16 h-16 bg-gradient-to-br from-primary to-secondary rounded-lg flex items-center justify-center mb-4">
                 <Wheat className="w-8 h-8 text-white" />
               </div>
@@ -76,7 +176,7 @@ const About = () => {
               </p>
             </div>
             
-            <div className="card-elevated p-6">
+            <div className="card-elevated p-6 hover:shadow-2xl transition-all duration-300 hover:-translate-y-2">
               <div className="w-16 h-16 bg-gradient-to-br from-primary to-secondary rounded-lg flex items-center justify-center mb-4">
                 <School className="w-8 h-8 text-white" />
               </div>
@@ -87,7 +187,7 @@ const About = () => {
               </p>
             </div>
             
-            <div className="card-elevated p-6">
+            <div className="card-elevated p-6 hover:shadow-2xl transition-all duration-300 hover:-translate-y-2">
               <div className="w-16 h-16 bg-gradient-to-br from-primary to-secondary rounded-lg flex items-center justify-center mb-4">
                 <Heart className="w-8 h-8 text-white" />
               </div>
@@ -98,7 +198,7 @@ const About = () => {
               </p>
             </div>
             
-            <div className="card-elevated p-6">
+            <div className="card-elevated p-6 hover:shadow-2xl transition-all duration-300 hover:-translate-y-2">
               <div className="w-16 h-16 bg-gradient-to-br from-primary to-secondary rounded-lg flex items-center justify-center mb-4">
                 <Droplets className="w-8 h-8 text-white" />
               </div>
@@ -109,7 +209,7 @@ const About = () => {
               </p>
             </div>
             
-            <div className="card-elevated p-6">
+            <div className="card-elevated p-6 hover:shadow-2xl transition-all duration-300 hover:-translate-y-2">
               <div className="w-16 h-16 bg-gradient-to-br from-primary to-secondary rounded-lg flex items-center justify-center mb-4">
                 <TreeDeciduous className="w-8 h-8 text-white" />
               </div>
@@ -120,7 +220,7 @@ const About = () => {
               </p>
             </div>
             
-            <div className="card-elevated p-6">
+            <div className="card-elevated p-6 hover:shadow-2xl transition-all duration-300 hover:-translate-y-2">
               <div className="w-16 h-16 bg-gradient-to-br from-primary to-secondary rounded-lg flex items-center justify-center mb-4">
                 <Users className="w-8 h-8 text-white" />
               </div>
@@ -135,7 +235,7 @@ const About = () => {
       </section>
 
       {/* Culture & Festivals */}
-      <section className="section-spacing">
+      <section className="section-spacing bg-muted/30">
         <div className="container-custom">
           <div className="grid lg:grid-cols-2 gap-12 items-center">
             <div>
@@ -158,11 +258,11 @@ const About = () => {
               </div>
             </div>
             
-            <div className="rounded-2xl overflow-hidden shadow-xl">
+            <div className="rounded-2xl overflow-hidden shadow-2xl">
               <img
                 src={festivalImage}
                 alt="Village Festival"
-                className="w-full h-[500px] object-cover"
+                className="w-full h-[500px] object-cover hover:scale-105 transition-transform duration-700"
               />
             </div>
           </div>
@@ -170,7 +270,7 @@ const About = () => {
       </section>
 
       {/* Development Timeline */}
-      <section className="section-spacing bg-muted/30">
+      <section className="section-spacing">
         <div className="container-custom">
           <div className="text-center mb-12">
             <h2 className="text-4xl font-bold text-foreground mb-4">Development Timeline</h2>
@@ -178,7 +278,7 @@ const About = () => {
           </div>
           
           <div className="max-w-4xl mx-auto">
-            <div className="space-y-8">
+            <div ref={timelineRef} className="space-y-8">
               {[
                 { year: "2020", title: "Solar Street Lights", description: "Installation of solar-powered street lights across all village roads" },
                 { year: "2019", title: "Digital Literacy Center", description: "Establishment of computer training center for youth and adults" },
@@ -191,7 +291,7 @@ const About = () => {
                     <span className="text-2xl font-bold text-primary">{milestone.year}</span>
                   </div>
                   <div className="flex-shrink-0 w-4 h-4 rounded-full bg-primary mt-2"></div>
-                  <div className="flex-1 card-elevated p-6">
+                  <div className="flex-1 card-elevated p-6 hover:shadow-xl transition-all duration-300 hover:-translate-y-1">
                     <h3 className="text-xl font-semibold text-foreground mb-2">{milestone.title}</h3>
                     <p className="text-muted-foreground">{milestone.description}</p>
                   </div>

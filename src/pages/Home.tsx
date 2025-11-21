@@ -10,12 +10,19 @@ import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import heroImage from "@/assets/hero-village.jpg";
 import festivalImage from "@/assets/festival.jpg";
+import gallery1Image from "@/assets/gallery-1.jpg";
+import gallery2Image from "@/assets/gallery-2.jpg";
+import gallery3Image from "@/assets/gallery-3.jpg";
+import eventHealthImage from "@/assets/event-health.jpg";
+import eventFarmersImage from "@/assets/event-farmers.jpg";
 
 gsap.registerPlugin(ScrollTrigger);
 
 const Home = () => {
   const heroRef = useRef<HTMLDivElement>(null);
   const statsRef = useRef<HTMLDivElement>(null);
+  const galleryRef = useRef<HTMLDivElement>(null);
+  const eventsRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     // Hero parallax effect
@@ -45,6 +52,36 @@ const Home = () => {
         },
       });
     }
+
+    // Gallery images stagger
+    if (galleryRef.current) {
+      const images = galleryRef.current.querySelectorAll('.gallery-item');
+      gsap.from(images, {
+        opacity: 0,
+        scale: 0.8,
+        duration: 0.8,
+        stagger: 0.2,
+        scrollTrigger: {
+          trigger: galleryRef.current,
+          start: "top 80%",
+        },
+      });
+    }
+
+    // Events cards
+    if (eventsRef.current) {
+      const cards = eventsRef.current.querySelectorAll('.event-card');
+      gsap.from(cards, {
+        opacity: 0,
+        y: 60,
+        duration: 0.8,
+        stagger: 0.15,
+        scrollTrigger: {
+          trigger: eventsRef.current,
+          start: "top 80%",
+        },
+      });
+    }
   }, []);
 
   return (
@@ -62,7 +99,7 @@ const Home = () => {
             backgroundPosition: "center",
           }}
         >
-          <div className="absolute inset-0 bg-gradient-to-b from-black/50 via-black/30 to-background"></div>
+          <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-black/40 to-background"></div>
         </div>
         
         <div className="relative h-full flex items-center justify-center text-center px-4">
@@ -102,8 +139,49 @@ const Home = () => {
         </div>
       </section>
 
-      {/* About Section */}
+      {/* Village Gallery */}
       <section className="section-spacing">
+        <div className="container-custom">
+          <div className="text-center mb-12">
+            <h2 className="text-4xl font-bold text-foreground mb-4">Life in Malkapur</h2>
+            <p className="text-muted-foreground text-lg">Capturing the essence of our vibrant village</p>
+          </div>
+          
+          <div ref={galleryRef} className="grid md:grid-cols-3 gap-6">
+            <div className="gallery-item md:col-span-2 h-[400px] rounded-2xl overflow-hidden shadow-xl group">
+              <img
+                src={gallery1Image}
+                alt="Village Life"
+                className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+              />
+            </div>
+            <div className="gallery-item h-[400px] rounded-2xl overflow-hidden shadow-xl group">
+              <img
+                src={gallery2Image}
+                alt="Village Landscape"
+                className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+              />
+            </div>
+            <div className="gallery-item h-[400px] rounded-2xl overflow-hidden shadow-xl group">
+              <img
+                src={gallery3Image}
+                alt="Community"
+                className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+              />
+            </div>
+            <div className="gallery-item md:col-span-2 h-[400px] rounded-2xl overflow-hidden shadow-xl group">
+              <img
+                src={festivalImage}
+                alt="Festival Celebrations"
+                className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+              />
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* About Section */}
+      <section className="section-spacing bg-muted/30">
         <div className="container-custom">
           <div className="grid lg:grid-cols-2 gap-12 items-center">
             <div>
@@ -124,11 +202,11 @@ const Home = () => {
                 </Button>
               </Link>
             </div>
-            <div className="rounded-2xl overflow-hidden shadow-xl">
+            <div className="rounded-2xl overflow-hidden shadow-2xl">
               <img
                 src={festivalImage}
                 alt="Malkapur Community"
-                className="w-full h-[500px] object-cover"
+                className="w-full h-[500px] object-cover hover:scale-105 transition-transform duration-700"
               />
             </div>
           </div>
@@ -136,38 +214,47 @@ const Home = () => {
       </section>
 
       {/* Upcoming Events */}
-      <section className="section-spacing bg-muted/30">
+      <section className="section-spacing">
         <div className="container-custom">
           <div className="text-center mb-12">
             <h2 className="text-4xl font-bold text-foreground mb-4">Upcoming Events</h2>
             <p className="text-muted-foreground text-lg">Stay connected with our community activities</p>
           </div>
           
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-            <EventCard
-              title="Health Check-up Camp"
-              date="15th March 2024"
-              venue="Village Health Center"
-              organizer="Grampanchayat Health Committee"
-              description="Free health screening for all village residents"
-              type="upcoming"
-            />
-            <EventCard
-              title="Farmers' Workshop"
-              date="22nd March 2024"
-              venue="Community Hall"
-              organizer="Agriculture Department"
-              description="Latest farming techniques and sustainable practices"
-              type="upcoming"
-            />
-            <EventCard
-              title="Independence Day Celebration"
-              date="15th August 2024"
-              venue="Village Ground"
-              organizer="Grampanchayat"
-              description="Cultural programs and flag hoisting ceremony"
-              type="upcoming"
-            />
+          <div ref={eventsRef} className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <div className="event-card">
+              <EventCard
+                title="Health Check-up Camp"
+                date="15th March 2024"
+                venue="Village Health Center"
+                organizer="Grampanchayat Health Committee"
+                description="Free health screening for all village residents"
+                type="upcoming"
+                image={eventHealthImage}
+              />
+            </div>
+            <div className="event-card">
+              <EventCard
+                title="Farmers' Workshop"
+                date="22nd March 2024"
+                venue="Community Hall"
+                organizer="Agriculture Department"
+                description="Latest farming techniques and sustainable practices"
+                type="upcoming"
+                image={eventFarmersImage}
+              />
+            </div>
+            <div className="event-card">
+              <EventCard
+                title="Independence Day Celebration"
+                date="15th August 2024"
+                venue="Village Ground"
+                organizer="Grampanchayat"
+                description="Cultural programs and flag hoisting ceremony"
+                type="upcoming"
+                image={festivalImage}
+              />
+            </div>
           </div>
           
           <div className="text-center mt-8">
@@ -182,7 +269,7 @@ const Home = () => {
       </section>
 
       {/* Google Maps Section */}
-      <section className="section-spacing">
+      <section className="section-spacing bg-muted/30">
         <div className="container-custom">
           <div className="text-center mb-12">
             <h2 className="text-4xl font-bold text-foreground mb-4">Find Us</h2>
