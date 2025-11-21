@@ -1,9 +1,52 @@
+import { useEffect, useRef } from "react";
 import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
 import { ProjectCard } from "@/components/ProjectCard";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import gsap from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+import projectSolarImage from "@/assets/project-solar.jpg";
+import projectHallImage from "@/assets/project-hall.jpg";
+import projectRoadsImage from "@/assets/project-roads.jpg";
+
+gsap.registerPlugin(ScrollTrigger);
 
 const Projects = () => {
+  const projectCardsRef = useRef<HTMLDivElement>(null);
+  const socialCardsRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    // Animate project cards
+    if (projectCardsRef.current) {
+      const cards = projectCardsRef.current.querySelectorAll('.project-card');
+      gsap.from(cards, {
+        opacity: 0,
+        y: 60,
+        duration: 0.8,
+        stagger: 0.15,
+        scrollTrigger: {
+          trigger: projectCardsRef.current,
+          start: "top 80%",
+        },
+      });
+    }
+
+    // Animate social cards
+    if (socialCardsRef.current) {
+      const cards = socialCardsRef.current.children;
+      gsap.from(cards, {
+        opacity: 0,
+        x: -40,
+        duration: 0.8,
+        stagger: 0.1,
+        scrollTrigger: {
+          trigger: socialCardsRef.current,
+          start: "top 80%",
+        },
+      });
+    }
+  }, []);
+
   return (
     <div className="min-h-screen">
       <Header />
@@ -32,54 +75,72 @@ const Projects = () => {
             </TabsList>
             
             <TabsContent value="all" className="space-y-6">
-              <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-                <ProjectCard
-                  title="Solar Street Light Installation"
-                  description="Installation of 180 solar-powered LED street lights across all village roads for better night safety and energy efficiency."
-                  status="completed"
-                  budget="₹45 Lakhs"
-                  startDate="Jan 2023"
-                  endDate="Dec 2023"
-                />
-                <ProjectCard
-                  title="Community Hall Renovation"
-                  description="Modernization of community hall with new audio-visual equipment, air conditioning, and expanded seating capacity."
-                  status="in-progress"
-                  budget="₹32 Lakhs"
-                  startDate="Oct 2023"
-                  endDate="Mar 2024"
-                />
-                <ProjectCard
-                  title="Digital Village Initiative"
-                  description="Free WiFi zones, digital payment training, and online government services access points throughout the village."
-                  status="in-progress"
-                  budget="₹18 Lakhs"
-                  startDate="Nov 2023"
-                  endDate="May 2024"
-                />
-                <ProjectCard
-                  title="Concrete Road Construction"
-                  description="Paving of all remaining unpaved village roads with cement concrete for all-weather accessibility."
-                  status="upcoming"
-                  budget="₹85 Lakhs"
-                  startDate="Apr 2024"
-                />
-                <ProjectCard
-                  title="Playground Development"
-                  description="Creation of modern sports facilities including cricket pitch, volleyball court, and children's play equipment."
-                  status="completed"
-                  budget="₹28 Lakhs"
-                  startDate="Jun 2022"
-                  endDate="Nov 2022"
-                />
-                <ProjectCard
-                  title="Drip Irrigation Training"
-                  description="Training program for farmers on water-efficient drip irrigation systems with subsidy support."
-                  status="in-progress"
-                  budget="₹12 Lakhs"
-                  startDate="Jan 2024"
-                  endDate="Dec 2024"
-                />
+              <div ref={projectCardsRef} className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <div className="project-card">
+                  <ProjectCard
+                    title="Solar Street Light Installation"
+                    description="Installation of 180 solar-powered LED street lights across all village roads for better night safety and energy efficiency."
+                    status="completed"
+                    budget="₹45 Lakhs"
+                    startDate="Jan 2023"
+                    endDate="Dec 2023"
+                    image={projectSolarImage}
+                  />
+                </div>
+                <div className="project-card">
+                  <ProjectCard
+                    title="Community Hall Renovation"
+                    description="Modernization of community hall with new audio-visual equipment, air conditioning, and expanded seating capacity."
+                    status="in-progress"
+                    budget="₹32 Lakhs"
+                    startDate="Oct 2023"
+                    endDate="Mar 2024"
+                    image={projectHallImage}
+                  />
+                </div>
+                <div className="project-card">
+                  <ProjectCard
+                    title="Digital Village Initiative"
+                    description="Free WiFi zones, digital payment training, and online government services access points throughout the village."
+                    status="in-progress"
+                    budget="₹18 Lakhs"
+                    startDate="Nov 2023"
+                    endDate="May 2024"
+                    image={projectSolarImage}
+                  />
+                </div>
+                <div className="project-card">
+                  <ProjectCard
+                    title="Concrete Road Construction"
+                    description="Paving of all remaining unpaved village roads with cement concrete for all-weather accessibility."
+                    status="upcoming"
+                    budget="₹85 Lakhs"
+                    startDate="Apr 2024"
+                    image={projectRoadsImage}
+                  />
+                </div>
+                <div className="project-card">
+                  <ProjectCard
+                    title="Playground Development"
+                    description="Creation of modern sports facilities including cricket pitch, volleyball court, and children's play equipment."
+                    status="completed"
+                    budget="₹28 Lakhs"
+                    startDate="Jun 2022"
+                    endDate="Nov 2022"
+                    image={projectHallImage}
+                  />
+                </div>
+                <div className="project-card">
+                  <ProjectCard
+                    title="Drip Irrigation Training"
+                    description="Training program for farmers on water-efficient drip irrigation systems with subsidy support."
+                    status="in-progress"
+                    budget="₹12 Lakhs"
+                    startDate="Jan 2024"
+                    endDate="Dec 2024"
+                    image={projectSolarImage}
+                  />
+                </div>
               </div>
             </TabsContent>
             
@@ -92,6 +153,7 @@ const Projects = () => {
                   budget="₹45 Lakhs"
                   startDate="Jan 2023"
                   endDate="Dec 2023"
+                  image={projectSolarImage}
                 />
                 <ProjectCard
                   title="Playground Development"
@@ -100,6 +162,7 @@ const Projects = () => {
                   budget="₹28 Lakhs"
                   startDate="Jun 2022"
                   endDate="Nov 2022"
+                  image={projectHallImage}
                 />
                 <ProjectCard
                   title="Water Treatment Plant"
@@ -108,6 +171,7 @@ const Projects = () => {
                   budget="₹65 Lakhs"
                   startDate="Mar 2021"
                   endDate="Sep 2021"
+                  image={projectSolarImage}
                 />
               </div>
             </TabsContent>
@@ -121,6 +185,7 @@ const Projects = () => {
                   budget="₹32 Lakhs"
                   startDate="Oct 2023"
                   endDate="Mar 2024"
+                  image={projectHallImage}
                 />
                 <ProjectCard
                   title="Digital Village Initiative"
@@ -129,6 +194,7 @@ const Projects = () => {
                   budget="₹18 Lakhs"
                   startDate="Nov 2023"
                   endDate="May 2024"
+                  image={projectSolarImage}
                 />
                 <ProjectCard
                   title="Drip Irrigation Training"
@@ -137,6 +203,7 @@ const Projects = () => {
                   budget="₹12 Lakhs"
                   startDate="Jan 2024"
                   endDate="Dec 2024"
+                  image={projectSolarImage}
                 />
               </div>
             </TabsContent>
@@ -149,6 +216,7 @@ const Projects = () => {
                   status="upcoming"
                   budget="₹85 Lakhs"
                   startDate="Apr 2024"
+                  image={projectRoadsImage}
                 />
                 <ProjectCard
                   title="Solar Pump Installation"
@@ -156,6 +224,7 @@ const Projects = () => {
                   status="upcoming"
                   budget="₹42 Lakhs"
                   startDate="Jun 2024"
+                  image={projectSolarImage}
                 />
                 <ProjectCard
                   title="Senior Citizen Care Center"
@@ -163,6 +232,7 @@ const Projects = () => {
                   status="upcoming"
                   budget="₹22 Lakhs"
                   startDate="Aug 2024"
+                  image={projectHallImage}
                 />
               </div>
             </TabsContent>
@@ -178,8 +248,8 @@ const Projects = () => {
             <p className="text-muted-foreground text-lg">Community support initiatives</p>
           </div>
           
-          <div className="grid md:grid-cols-2 gap-6">
-            <div className="card-elevated p-6">
+          <div ref={socialCardsRef} className="grid md:grid-cols-2 gap-6">
+            <div className="card-elevated p-6 hover:shadow-xl transition-all duration-300 hover:-translate-y-1">
               <h3 className="text-xl font-semibold text-foreground mb-3">Free Health Check-up Camps</h3>
               <p className="text-muted-foreground mb-4">
                 Quarterly health screening camps with specialist doctors from nearby cities. Free medicines
@@ -188,7 +258,7 @@ const Projects = () => {
               <div className="text-sm text-primary font-medium">Held: Every 3 months</div>
             </div>
             
-            <div className="card-elevated p-6">
+            <div className="card-elevated p-6 hover:shadow-xl transition-all duration-300 hover:-translate-y-1">
               <h3 className="text-xl font-semibold text-foreground mb-3">Educational Scholarships</h3>
               <p className="text-muted-foreground mb-4">
                 Financial assistance for meritorious students pursuing higher education. Support for
@@ -197,7 +267,7 @@ const Projects = () => {
               <div className="text-sm text-primary font-medium">Beneficiaries: 150+ students annually</div>
             </div>
             
-            <div className="card-elevated p-6">
+            <div className="card-elevated p-6 hover:shadow-xl transition-all duration-300 hover:-translate-y-1">
               <h3 className="text-xl font-semibold text-foreground mb-3">Senior Citizen Support</h3>
               <p className="text-muted-foreground mb-4">
                 Monthly pension support, free medical check-ups, and social engagement activities.
@@ -206,7 +276,7 @@ const Projects = () => {
               <div className="text-sm text-primary font-medium">Coverage: All senior citizens 60+</div>
             </div>
             
-            <div className="card-elevated p-6">
+            <div className="card-elevated p-6 hover:shadow-xl transition-all duration-300 hover:-translate-y-1">
               <h3 className="text-xl font-semibold text-foreground mb-3">Cleanliness Drives</h3>
               <p className="text-muted-foreground mb-4">
                 Weekly community cleaning campaigns, waste segregation awareness, and plastic-free
@@ -215,7 +285,7 @@ const Projects = () => {
               <div className="text-sm text-primary font-medium">Participation: 500+ volunteers</div>
             </div>
             
-            <div className="card-elevated p-6">
+            <div className="card-elevated p-6 hover:shadow-xl transition-all duration-300 hover:-translate-y-1">
               <h3 className="text-xl font-semibold text-foreground mb-3">Skill Development</h3>
               <p className="text-muted-foreground mb-4">
                 Free vocational training in tailoring, computer skills, and entrepreneurship.
@@ -224,7 +294,7 @@ const Projects = () => {
               <div className="text-sm text-primary font-medium">Trained: 300+ individuals yearly</div>
             </div>
             
-            <div className="card-elevated p-6">
+            <div className="card-elevated p-6 hover:shadow-xl transition-all duration-300 hover:-translate-y-1">
               <h3 className="text-xl font-semibold text-foreground mb-3">Food Security Program</h3>
               <p className="text-muted-foreground mb-4">
                 Subsidized ration for below poverty line families, community kitchen during emergencies,

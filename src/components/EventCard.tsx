@@ -1,5 +1,4 @@
-import { Calendar, MapPin, Users } from "lucide-react";
-import { Badge } from "@/components/ui/badge";
+import { Calendar, MapPin, User } from "lucide-react";
 
 interface EventCardProps {
   title: string;
@@ -8,33 +7,77 @@ interface EventCardProps {
   organizer: string;
   description: string;
   type: "upcoming" | "completed";
+  image?: string;
 }
 
-export const EventCard = ({ title, date, venue, organizer, description, type }: EventCardProps) => {
+export const EventCard = ({
+  title,
+  date,
+  venue,
+  organizer,
+  description,
+  type,
+  image,
+}: EventCardProps) => {
   return (
-    <div className="card-elevated p-6 hover:scale-[1.02] transition-transform duration-300">
-      <div className="flex items-start justify-between mb-4">
-        <h3 className="text-lg font-semibold text-foreground">{title}</h3>
-        <Badge variant={type === "upcoming" ? "default" : "secondary"}>
-          {type === "upcoming" ? "Upcoming" : "Completed"}
-        </Badge>
-      </div>
+    <div className="card-elevated overflow-hidden group hover:shadow-2xl transition-all duration-300 hover:-translate-y-2">
+      {image && (
+        <div className="relative h-64 overflow-hidden">
+          <img
+            src={image}
+            alt={title}
+            className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+          />
+          <div className="absolute inset-0 bg-gradient-to-t from-background/90 via-background/40 to-transparent"></div>
+          <div className="absolute top-4 right-4">
+            <span
+              className={`text-xs font-medium px-3 py-1 rounded-full backdrop-blur-sm ${
+                type === "upcoming"
+                  ? "bg-primary/90 text-primary-foreground"
+                  : "bg-green-500/90 text-white"
+              }`}
+            >
+              {type === "upcoming" ? "Upcoming" : "Completed"}
+            </span>
+          </div>
+        </div>
+      )}
       
-      <p className="text-sm text-muted-foreground mb-4">{description}</p>
-      
-      <div className="space-y-2 text-sm">
-        <div className="flex items-center text-muted-foreground">
-          <Calendar className="w-4 h-4 mr-2 text-primary" />
-          <span>{date}</span>
+      <div className="p-6">
+        {!image && (
+          <div className="flex items-center gap-2 mb-3">
+            <span
+              className={`text-xs font-medium px-3 py-1 rounded-full ${
+                type === "upcoming"
+                  ? "bg-primary/10 text-primary"
+                  : "bg-green-500/10 text-green-600"
+              }`}
+            >
+              {type === "upcoming" ? "Upcoming" : "Completed"}
+            </span>
+          </div>
+        )}
+        
+        <h3 className="text-xl font-semibold text-foreground mb-3 group-hover:text-primary transition-colors">
+          {title}
+        </h3>
+        
+        <div className="space-y-2 mb-4 text-sm text-muted-foreground">
+          <div className="flex items-center gap-2">
+            <Calendar className="w-4 h-4 text-primary" />
+            <span>{date}</span>
+          </div>
+          <div className="flex items-center gap-2">
+            <MapPin className="w-4 h-4 text-primary" />
+            <span>{venue}</span>
+          </div>
+          <div className="flex items-center gap-2">
+            <User className="w-4 h-4 text-primary" />
+            <span>{organizer}</span>
+          </div>
         </div>
-        <div className="flex items-center text-muted-foreground">
-          <MapPin className="w-4 h-4 mr-2 text-primary" />
-          <span>{venue}</span>
-        </div>
-        <div className="flex items-center text-muted-foreground">
-          <Users className="w-4 h-4 mr-2 text-primary" />
-          <span>{organizer}</span>
-        </div>
+        
+        <p className="text-sm text-muted-foreground">{description}</p>
       </div>
     </div>
   );
